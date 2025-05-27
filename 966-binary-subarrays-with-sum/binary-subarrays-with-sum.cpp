@@ -1,25 +1,27 @@
 class Solution {
 public:
-    int numSubarraysWithSum(vector<int>& nums, int goal) {
-        unordered_map<int, int> hash; //sum, count
+    int subArraysWithGoal(vector<int>& nums, int goal) {
+        if(goal < 0) return 0;
+        int l = 0, r = 0, cnt = 0, sum = 0;
 
-        hash[0] = 1;
-        int sum = 0, ans = 0;
+        while(r < nums.size()) {
+            sum += nums[r];
 
-        for(int i = 0; i < nums.size(); i++) {
-            sum += nums[i];
-
-            if(hash.find(sum - goal) != hash.end()) {
-                ans += hash[sum-goal];
+            while(sum > goal) {
+                sum = sum - nums[l];
+                l++;
             }
 
-            if(hash.find(sum) != hash.end()) {
-                hash[sum]++;
-            } else {
-                hash[sum] = 1;
-            }
+            cnt = cnt + (r - l + 1);
+            r++;
         }
+        return cnt;
+    }
 
-        return ans;
+    int numSubarraysWithSum(vector<int>& nums, int goal) {
+        int ans1 = subArraysWithGoal(nums, goal);
+        int ans2 = subArraysWithGoal(nums, goal-1); 
+
+        return ans1 - ans2;       
     }
 };
