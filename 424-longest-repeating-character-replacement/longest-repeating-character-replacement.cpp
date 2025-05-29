@@ -10,10 +10,6 @@ public:
 
             if((r-l+1)-maxFreq > k) {
                 hash[s[l]-'A']--;
-                maxFreq = 0;
-                for(int i = 0; i < 26; i++) {
-                    maxFreq = max(hash[i], maxFreq);
-                }
                 l++;
             }
 
