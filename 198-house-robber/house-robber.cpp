@@ -24,21 +24,20 @@ public:
         // robHelper(nums, n, dp); By memoization
 
         //Tabulation
-        vector<int> dp(n, 0);
-        dp[0] = nums[0];
-        int neg = 0;
+       int neg = 0, prev1 = nums[0], prev2 = 0;
 
         for(int i = 1; i < n; i++) {
             //pick
-            int rob = nums[i];
-            if(i > 1) rob += dp[i-2];
+            int rob = nums[i] + prev2;
 
             //Don't pick
-            int noRob = 0 + dp[i-1];
+            int noRob = 0 + prev1;
 
-            dp[i] = max(rob, noRob);
+            prev2 = prev1;
+            prev1 = max(rob, noRob);
+
         }
-        return dp[n-1];
+        return prev1;
     }
 };
 
