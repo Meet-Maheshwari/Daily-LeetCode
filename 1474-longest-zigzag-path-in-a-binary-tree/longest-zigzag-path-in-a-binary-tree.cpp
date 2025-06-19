@@ -12,27 +12,20 @@
 class Solution {
 public:
     int maxLen = 0;
+    void findTotal(TreeNode* root, int dir, int currLen) {
+        if(root == NULL) return;
 
-    pair<int, int> dfs(TreeNode* root) {
-        if (!root) return {-1, -1};  // base: -1 so when +1 becomes 0
-
-        auto left = dfs(root->left);
-        auto right = dfs(root->right);
-
-        int leftZigZag = 1 + left.second;   // left move => then right
-        int rightZigZag = 1 + right.first;  // right move => then left
-
-        maxLen = max({maxLen, leftZigZag, rightZigZag});
-
-        return {leftZigZag, rightZigZag};
+        maxLen = max(maxLen, currLen);
+        findTotal(root -> left, 0, dir?currLen+1:1 );
+        findTotal(root -> right, 1, dir?1:currLen+1 );
     }
 
     int longestZigZag(TreeNode* root) {
-        dfs(root);
+        findTotal(root, 0, 0);
+        findTotal(root, 1, 0);
         return maxLen;
     }
 };
-
 
 
 
