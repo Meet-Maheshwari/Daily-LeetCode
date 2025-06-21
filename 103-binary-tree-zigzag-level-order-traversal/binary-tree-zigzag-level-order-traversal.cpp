@@ -16,44 +16,38 @@ public:
         vector<vector<int>> result;
         vector<int> ans;
 
-        stack<TreeNode*> s1, s2;
+        deque<TreeNode*> deq;
+        bool rev = false;
+        deq.push_back(root);
 
-        s1.push(root);
-        bool rev = true;
+        while(!deq.empty()) {
+            int size = deq.size();
 
-        while(!s1.empty() || !s2.empty()) {
-            if(rev) {
-                while(!s1.empty()) {
-                    TreeNode* curr = s1.top();
-                    s1.pop();
+            for(int i = 0; i < size; i++) {                
+                if (rev) {
+                    TreeNode* curr = deq.back();
+                    deq.pop_back();
                     ans.push_back(curr->val);
 
-                    if(curr->left) {
-                        s2.push(curr->left);
-                    }
-                    if(curr->right) {
-                        s2.push(curr->right);
-                    }
+                    if (curr->right) deq.push_front(curr->right);
+                    if (curr->left)  deq.push_front(curr->left);
                 }
-            } else {
-                while(!s2.empty()) {
-                    TreeNode* curr = s2.top();
-                    s2.pop();
+                
+                // Else push left first
+                else {
+                    TreeNode* curr = deq.front();
+                    deq.pop_front();
                     ans.push_back(curr->val);
 
-                    if(curr->right) {
-                        s1.push(curr->right);
-                    }
-                    if(curr->left) {
-                        s1.push(curr->left);
-                    }
+                    if (curr->left)  deq.push_back(curr->left);
+                    if (curr->right) deq.push_back(curr->right);
                 }
             }
+            
+            rev = !rev;
             result.push_back(ans);
             ans = {};
-            rev = ! rev;
         }
-
         return result;
     }
 };
