@@ -1,27 +1,27 @@
 class Solution {
 public:
     int totalFruit(vector<int>& fruits) {
-        int l = 0, r = 0;
-        int maxLen = 0;
+        int l = 0, r = 0, n = fruits.size(), len = 0, maxLen = INT_MIN;
+        unordered_map<int, int> map;
 
-        unordered_map<int, int> hash ;//fruit, count;
-
-        while(r < fruits.size()) {
-            int fruit = fruits[r];
-
-            if(hash.count(fruit)) {
-                hash[fruit]++;
+        while(r < n) {
+            if(!map.count(fruits[r])) {
+                map[fruits[r]] = 1;
             } else {
-                hash[fruit] = 1;
+                map[fruits[r]]++;
             }
-            if(hash.size() > 2) {
-                hash[fruits[l]]--;
-                if(hash[fruits[l]] == 0) hash.erase(fruits[l]);
+
+            if(map.size() > 2) {
+                map[fruits[l]]--;
+                if(map[fruits[l]] == 0) {
+                    map.erase(fruits[l]);
+                }
                 l++;
             }
 
-            int len = r - l + 1;
-            maxLen = max(maxLen, len);
+            if(map.size() <= 2) {
+                maxLen = max(maxLen, r-l+1);
+            }
             r++;
         }
 
