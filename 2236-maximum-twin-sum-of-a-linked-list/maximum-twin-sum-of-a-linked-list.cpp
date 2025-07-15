@@ -11,18 +11,34 @@
 class Solution {
 public:
     int pairSum(ListNode* head) {
-        ListNode* p = head;
-        vector<int> list;
-
-        while(p != NULL) {
-            list.push_back(p -> val);
-            p = p->next;
+        ListNode* slow = head;
+        ListNode* fast = head;
+        ListNode* q = NULL;
+        
+        while(fast != NULL && fast->next != NULL) {
+            q = slow;
+            slow = slow->next;
+            fast = fast->next->next;
         }
 
-        int maxTwinSum = 0, n = list.size();
-        for(int i = 0; i < n/2; i++) {
-            int twinSum = list[i] + list[n-i-1];
+        q->next = NULL;
+
+        ListNode* curr = slow;
+        ListNode* prev = NULL;
+
+        while(curr != NULL) {
+            ListNode* next = curr -> next;
+            curr -> next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        int maxTwinSum = 0;
+        while(head != NULL && prev != NULL) {
+            int twinSum = head->val + prev -> val;
             maxTwinSum = max(maxTwinSum, twinSum);
+            head = head->next;
+            prev = prev->next;
         }
 
         return maxTwinSum;
