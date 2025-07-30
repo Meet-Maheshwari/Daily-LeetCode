@@ -1,20 +1,22 @@
 class Solution {
 public:
-    vector<int> lexicalOrder(int n) {
-        vector<string> ans;
+    void getOrder(int curr, int n, vector<int>& ans) {
+        if(curr > n) return;
 
-        for(int i = 1; i <= n; i++) {
-            ans.push_back(to_string(i));
+        ans.push_back(curr);
+        
+        for(int i = 0; i <= 9; i++) {
+            getOrder(curr*10 + i, n, ans);
         }
-
-        sort(ans.begin(), ans.end());
-        vector<int> res;
-
-        for(int i = 0; i < ans.size(); i++) {
-            int num = stoi(ans[i]);
-            res.push_back(num);
-        }
-
-        return res;
     }
+
+    vector<int> lexicalOrder(int n) {
+        vector<int> ans;
+
+        for(int i = 1; i <= 9; i++) {
+            getOrder(i, n, ans);
+        }
+
+        return ans;
+    } 
 };
