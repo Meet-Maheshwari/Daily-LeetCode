@@ -1,31 +1,30 @@
 class Solution {
 public:
-    bool canEatAll(vector<int>& piles, int k, int h) {
+    bool kokoCanEatMid(long long mid, vector<int>& piles, int h) {
         long long hours = 0;
-
         for(int i = 0; i < piles.size(); i++) {
-            hours += (piles[i] + k - 1) / k;
+            hours += (piles[i] + mid - 1) / mid; 
         }
 
         return hours <= h;
     }
 
     int minEatingSpeed(vector<int>& piles, int h) {
-        long long start = 1;
-        long long end = *max_element(piles.begin(), piles.end());
-        long long k = end;
+        long long si = 1;
+        long long ei = *max_element(piles.begin(), piles.end());
+        int ans = ei;
 
-        while(start <= end) {
-            long long mid = start + (end-start)/2;
+        while(si <= ei) {
+            long long mid = si + (ei - si)/2;
 
-            if(canEatAll(piles, mid, h)) {
-                end = mid-1;
-                k = mid;
+            if(kokoCanEatMid(mid, piles, h)) {
+                ei = mid-1;
+                ans = mid;
             } else {
-                start = mid+1;
+                si = mid+1;
             }
         }
 
-        return (int)k;
+        return ans;
     }
 };
