@@ -4,10 +4,7 @@ public:
 
     void findCombinations(int i, int n, vector<int>& comb, vector<vector<int>>& ans, vector<int>& candidates, int target) { 
         if(target == 0) {
-            if(s.find(comb) == s.end()) {
-                s.insert(comb);
-                ans.push_back(comb);
-            }
+            ans.push_back(comb);
             return;
         }
         if(i >= n) {
