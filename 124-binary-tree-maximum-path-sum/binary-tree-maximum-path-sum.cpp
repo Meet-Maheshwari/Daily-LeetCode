@@ -13,24 +13,26 @@ class Solution {
 public:
     int maxSum = INT_MIN;
 
-    int maxPathSumHelper(TreeNode* root, int& sum) {
+    int maxPathSumHelper(TreeNode* root) {
         if(root == NULL) {
             return 0;
         }
 
-        int leftSum = max(0, maxPathSumHelper(root->left, sum));
-        int rightSum = max(0, maxPathSumHelper(root->right, sum));
-        int currSum = root->val + leftSum + rightSum;
+        int leftSum = maxPathSumHelper(root->left);
+        int rightSum = maxPathSumHelper(root->right);
 
-        maxSum = max(currSum, maxSum);
+        int currSum1 = root -> val;
+        int currSum2 = root -> val + max(leftSum, rightSum);
+        int currSum3 = root -> val + leftSum + rightSum;
 
-        return root-> val + max(leftSum, rightSum);
+        maxSum = max(maxSum, max(currSum1, max(currSum2, currSum3)));
+
+        return root -> val + max(0, max(leftSum, rightSum));
     }
 
 
     int maxPathSum(TreeNode* root) {
-        int sum = 0;
-        maxPathSumHelper(root, sum);
+        maxPathSumHelper(root);
         return maxSum;
     }
 };
