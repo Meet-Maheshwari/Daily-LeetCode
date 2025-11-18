@@ -26,9 +26,18 @@ public:
         sort(sis.begin(), sis.end());
 
         int n = nums.size(), m = sis.size();
-        vector<vector<int>> dp (n+1, vector<int>(m+1, -1));
+        vector<vector<int>> dp (n+1, vector<int>(m+1, 0));
 
-        lcss(nums, sis, n, m, dp);
+        for(int i = 1; i < n+1; i++) {
+            for(int j = 1; j < m+1; j++) {
+                if(nums[i-1] == sis[j-1]) {
+                    dp[i][j] = 1 + dp[i-1][j-1];
+                } else {
+                    dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+                }
+            }
+        }
+
         return dp[n][m];
     }
 };
