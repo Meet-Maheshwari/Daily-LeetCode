@@ -1,34 +1,34 @@
 class Solution {
 public:
-    bool isPalindrome(string str) {
-        string temp = str;
-        reverse(temp.begin(), temp.end());
+    vector<vector<string>> ans;
 
-        return temp == str;
+    bool isPalindrome(string s) {
+        string rev = s;
+        reverse(rev.begin(), rev.end());
+
+        return rev == s;
     }
 
-    void findAllPalindromes(string s, vector<string>& palindromes, vector<vector<string>>& ans) {
-        if(s.size() == 0) {
-            ans.push_back(palindromes);
+    void findAllPalindromes(string s, int end, vector<string>& store) {
+        int n = s.size();
+        if(end == n) {
+            ans.push_back(store);
         }
 
-        int n = s.size();
+        for(int idx = end; idx < n; idx++) {
+            string str = s.substr(end, idx-end+1);
 
-        for(int i = 0; i < n; i++) {
-            string leftStr = s.substr(0, i+1);
-            if(isPalindrome(leftStr)) {
-                palindromes.push_back(leftStr);
-                findAllPalindromes(s.substr(i+1), palindromes, ans);
-                palindromes.pop_back();
-            }
-        }  
+            if(isPalindrome(str)) {
+                store.push_back(str);
+                findAllPalindromes(s, idx+1, store);
+                store.pop_back();
+            } 
+        }
     }
 
     vector<vector<string>> partition(string s) {
-        vector<vector<string>> ans;
         vector<string> palindromes;
-        
-        findAllPalindromes(s, palindromes, ans);
+        findAllPalindromes(s, 0, palindromes);
 
         return ans;
     }
